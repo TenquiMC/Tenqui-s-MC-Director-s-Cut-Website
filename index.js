@@ -34,6 +34,8 @@ if (assignedPageImages[thirdPageImageIndex] === excludedThirdPageImage) {
 let currentPage = 0;
 let locked = false;
 let loadingScreen = null;
+let touchStartX = 0;
+let touchStartY = 0;
 
 if ('scrollRestoration' in history) {
   history.scrollRestoration = 'manual';
@@ -206,6 +208,42 @@ window.addEventListener(
     goToPage(currentPage + (event.deltaY > 0 ? 1 : -1));
   },
   { passive: false }
+);
+
+window.addEventListener(
+  'touchstart',
+  (event) => {
+    const touch = event.touches[0];
+
+    if (!touch) {
+      return;
+    }
+
+    touchStartX = touch.clientX;
+    touchStartY = touch.clientY;
+  },
+  { passive: true }
+);
+
+window.addEventListener(
+  'touchend',
+  (event) => {
+    const touch = event.changedTouches[0];
+
+    if (!touch) {
+      return;
+    }
+
+    const deltaX = touch.clientX - touchStartX;
+    const deltaY = touch.clientY - touchStartY;
+
+    if (Math.abs(deltaY) < 50 || Math.abs(deltaY) <= Math.abs(deltaX)) {
+      return;
+    }
+
+    goToPage(currentPage + (deltaY < 0 ? 1 : -1));
+  },
+  { passive: true }
 );
 
 window.addEventListener('keydown', (event) => {
