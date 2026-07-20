@@ -10,13 +10,30 @@ const heroImages = [
 let currentPage = 0;
 let locked = false;
 
+if ('scrollRestoration' in history) {
+  history.scrollRestoration = 'manual';
+}
+
 if (heroImage && heroImages.length > 0) {
   const randomIndex = Math.floor(Math.random() * heroImages.length);
   heroImage.src = heroImages[randomIndex];
 }
 
+function resetToFirstPage() {
+  currentPage = 0;
+  document.documentElement.scrollTop = 0;
+  document.body.scrollTop = 0;
+  window.scrollTo(0, 0);
+}
+
 window.addEventListener('load', () => {
+  resetToFirstPage();
   loadingScreen?.classList.add('is-hidden');
+});
+
+window.addEventListener('pageshow', () => {
+  resetToFirstPage();
+  window.setTimeout(resetToFirstPage, 0);
 });
 
 function goToPage(pageIndex) {
