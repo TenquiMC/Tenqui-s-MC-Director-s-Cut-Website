@@ -3,6 +3,8 @@ const heroImage = document.querySelector('.hero-image');
 const latestDownloadButton = document.querySelector('#latestDownloadButton');
 const latestVersionLabel = document.querySelector('#latestVersionLabel');
 const latestDateLabel = document.querySelector('#latestDateLabel');
+const latestGameVersionLabel = document.querySelector('#latestGameVersionLabel');
+const latestLoaderLabel = document.querySelector('#latestLoaderLabel');
 const heroImages = [
   'img/2024-01-19_23.10.12.png',
   'img/2024-01-25_15.45.08.png',
@@ -76,6 +78,14 @@ function resetToFirstPage() {
   });
 }
 
+function formatLoaderName(loader) {
+  if (!loader) {
+    return '';
+  }
+
+  return loader.charAt(0).toUpperCase() + loader.slice(1);
+}
+
 async function updateLatestDownload() {
   if (!latestDownloadButton) {
     return;
@@ -104,6 +114,14 @@ async function updateLatestDownload() {
 
     if (latestDateLabel) {
       latestDateLabel.textContent = new Date(latestVersion.date_published).toLocaleDateString('zh-CN').replaceAll('-', '/');
+    }
+
+    if (latestGameVersionLabel && latestVersion.game_versions?.length > 0) {
+      latestGameVersionLabel.textContent = latestVersion.game_versions.join(' / ');
+    }
+
+    if (latestLoaderLabel && latestVersion.loaders?.length > 0) {
+      latestLoaderLabel.textContent = latestVersion.loaders.map(formatLoaderName).join(' / ');
     }
   } catch {
     // Static fallback link remains usable when Modrinth API is unavailable.
