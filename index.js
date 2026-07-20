@@ -12,7 +12,24 @@ const heroImages = [
   'img/Image_1784529963574_791..png',
   'img/\u5c4f\u5e55\u622a\u56fe 2023-04-30 224519.png',
 ];
+const excludedThirdPageImage = 'img/Image_1784529963574_791..png';
 const shuffledHeroImages = [...heroImages].sort(() => Math.random() - 0.5);
+const assignedPageImages = [...shuffledHeroImages];
+const thirdPageImageIndex = 2;
+
+if (assignedPageImages[thirdPageImageIndex] === excludedThirdPageImage) {
+  const swapIndex = assignedPageImages.findIndex((heroImagePath, imageIndex) => (
+    imageIndex !== thirdPageImageIndex
+    && heroImagePath !== excludedThirdPageImage
+  ));
+
+  if (swapIndex !== -1) {
+    [assignedPageImages[thirdPageImageIndex], assignedPageImages[swapIndex]] = [
+      assignedPageImages[swapIndex],
+      assignedPageImages[thirdPageImageIndex],
+    ];
+  }
+}
 
 let currentPage = 0;
 let locked = false;
@@ -40,9 +57,10 @@ if (heroImage && shuffledHeroImages.length > 0) {
 pages.slice(1, 4).forEach((page, pageIndex) => {
   const background = page.querySelector('.page-bg');
   const image = document.createElement('img');
+
   image.className = 'page-bg-image';
   image.alt = '';
-  image.src = shuffledHeroImages[pageIndex + 1];
+  image.src = assignedPageImages[pageIndex + 1];
   background?.prepend(image);
 });
 
