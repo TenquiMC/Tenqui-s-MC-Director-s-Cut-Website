@@ -19,7 +19,13 @@ body {
 main {
   position: relative;
   width: 100vw;
+
+  /* 旧浏览器回退 */
   height: 100vh;
+
+  /* 实际可见区域，会随浏览器工具栏变化 */
+  height: 100dvh;
+
   overflow: hidden;
 }
 
@@ -48,7 +54,13 @@ main {
   position: absolute;
   inset: 0;
   width: 100%;
+
+  /* 旧浏览器回退 */
   height: 100vh;
+
+  /* 修复 Chrome 地址栏导致的底部裁剪 */
+  height: 100dvh;
+
   overflow: hidden;
   pointer-events: none;
   visibility: hidden;
@@ -183,6 +195,10 @@ body.is-loaded .is-leaving .text-line {
 .download-panel p,
 .download-info p {
   margin: 0;
+}
+
+.mobile-recommendation {
+  display: none;
 }
 
 .hero-kicker,
@@ -531,6 +547,14 @@ body.is-loaded .is-leaving .download-button.text-line {
   .download-page .download-button {
     margin-right: auto;
     margin-left: auto;
+  }
+
+  .desktop-recommendation {
+    display: none;
+  }
+
+  .mobile-recommendation {
+    display: inline;
   }
 
   .metric-row {
